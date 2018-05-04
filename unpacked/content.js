@@ -322,8 +322,22 @@ function resolveURLToPath(cUrl,cType,cContent) {
 	filepath = filepath
 		.replace(/\:|\\|\/\/|\=|\*|\.$|\"|\'|\?|\~|\||\<|\>/g, '')
 		.replace(/(\s|\.)\//g, '/')
-		.replace(/\/(\s|\.)/g, '/');
+		.replace(/\/(\s|\.)/g, '/')
 
+		;
+//C:\Users\StevenOBrien\Downloads\All Resources\all (2).zip/simimaging.infigosoftware.com/-1275147592/Handler/Picture\PI\T
+
+    // Truncate Handler and parent folder
+    if (filepath.indexOf('/Handler') !== -1) {
+        try {
+            //filepath.split()
+			var i = filepath.indexOf('/Handler');
+			var subpath = filepath.substr(i+9);
+			filepath = subpath;
+        } catch (err) {
+            console.log(err);
+        }
+    }
 	// Decode URI
 	if (filepath.indexOf('%') !== -1) {
 		try {
