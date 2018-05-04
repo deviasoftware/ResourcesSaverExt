@@ -312,6 +312,10 @@ function resolveURLToPath(cUrl,cType,cContent) {
 			if (cType.indexOf('html') !== -1) {
 				filepath = filepath + '.html';
 			}
+            // HTML
+            if (cType.indexOf('document') !== -1) {
+                filepath = filepath + '.html';
+            }
 		} else {
 			// Add default html for text document
 			filepath = filepath + '.html';

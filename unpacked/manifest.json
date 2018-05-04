@@ -1,13 +1,13 @@
 {
-	"name": "Save All Resources",
+	"name": "Catfish snapshot",
 	"version": "0.1.2",
-	"description": "UP - Save all resources files with retaining folder structure.",
+	"description": "Take Snapshot of Catfish Resources",
 	"icons": {
     "128": "icon.gif"
 	},
 	"browser_action": {
     "default_icon": "icon.gif",
-		"default_title": "UP",
+		"default_title": "CS",
 		"default_popup": "popup.html"
   },
 	"background": {
