@@ -12,6 +12,7 @@
 		</h1>
 		<ul id="options">
 			<li id="option-zip"><input id="check-zip" type="checkbox" checked/> <label id="label-zip" for="check-zip">Compress all assets & download at once <B>(Recommended)</B></label></li>
+            <li id="option-zipname"> <label id="label-text-zipname" for="text-zipname">Name of the zip file: </label><input id="text-zipname" type="text"/></li>
 			<li id="option-beautify"><input id="check-beautify" type="checkbox"/> <label id="label-beautify" for="check-beautify">Beautify JS,HTML,CSS code before download.</label></li>
     		<li id="option-all"><input id="check-all" type="checkbox" /> <label for="check-all">Download from all domains in current resources.</label></li>
 			<li id="option-cache"><input id="check-cache" type="checkbox" /> <label for="check-cache">Save resource contents from system cache.</label></li>
@@ -27,10 +28,13 @@
 		<div id="debug"></div>
 		<div id="version">Version 0.1.2.1 - Devia forked</div>
 	</div>
+
+
 	<script src="beautify/beautify.js"></script>
 	<script src="beautify/beautify-css.js"></script>
 	<script src="beautify/beautify-html.js"></script>
 	<script src="zip/zip.js"></script>
 	<script src="content.js"></script>
+
 </body>
 </html>

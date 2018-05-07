@@ -2,6 +2,19 @@ document.getElementById('refresh').addEventListener('click',function(){
 	window.location.reload(true);
 });
 
+getDefaultZipFileName();
+
+function getDefaultZipFileName(){
+
+    chrome.tabs.get(chrome.devtools.inspectedWindow.tabId, function(tab){
+        document.getElementById('text-zipname').value =  tab.url.split('://')[1]
+            .replace(/\:|\\|\/\/|\=|\*|\.$|\"|\'|\?|\~|\||\<|\>/g, '')
+            .replace(/(\s|\.)\//g, '/')
+            .replace(/\/(\s|\.)/g, '/')
+            + '.zip';
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 	//	chrome.devtools.network.getHAR(function(logInfo){
 	//			console.log(logInfo);
@@ -183,8 +196,8 @@ function saveAllResources(e) {
 				if (document.getElementById('check-zip').checked) {
 					// No need to turn off notification for only one zip file
 					chrome.downloads.setShelfEnabled(true);
-
-					downloadZipFile(toDownload, allDone);
+                    filename = document.getElementById('text-zipname').value;
+					downloadZipFile(toDownload, filename, allDone);
 				} else {
 					downloadListWithThread(toDownload, downloadThread, allDone);
 				}
@@ -328,8 +341,6 @@ function resolveURLToPath(cUrl,cType,cContent) {
 		.replace(/(\s|\.)\//g, '/')
 		.replace(/\/(\s|\.)/g, '/')
 
-		;
-//C:\Users\StevenOBrien\Downloads\All Resources\all (2).zip/simimaging.infigosoftware.com/-1275147592/Handler/Picture\PI\T
 
     // Truncate Handler and parent folder
     if (filepath.indexOf('/Handler') !== -1) {
@@ -409,7 +420,7 @@ function downloadURLs(urls, callback) {
 				try {
 					chrome.downloads.download({
 							url: finalURI, //currentURL.url
-							filename: 'All Resources/' + filepath,
+							filename: 'CatfishSnapshots/' + filepath,
 							saveAs: false
 						},
 						function (downloadId) {
@@ -442,7 +453,7 @@ function downloadURLs(urls, callback) {
 			try {
 				chrome.downloads.download({
 						url: currentURL.url,
-						filename: 'All Resources/' + filepath,
+						filename: 'CatfishSnapshots/' + filepath,
 						saveAs: false
 					},
 					function (downloadId) {
@@ -535,13 +546,13 @@ function downloadURLs(urls, callback) {
 	});
 }
 
-function downloadZipFile(toDownload, callback) {
+function downloadZipFile(toDownload, filename, callback) {
 	if (zip) {
 		zip.workerScriptsPath = "zip/";
 		getAllToDownloadContent(toDownload, function (result) {
 			console.log(result);
 			zip.createWriter(new zip.BlobWriter(), function (blobWriter) {
-				addItemsToZipWriter(blobWriter, result, downloadCompleteZip.bind(this, blobWriter, callback));
+				addItemsToZipWriter(blobWriter, result, downloadCompleteZip.bind(this, blobWriter, filename, callback));
 			}, function (err) {
 				console.log('ERROR: ', err, currentRest);
 				// Continue on Error, error might lead to corrupted zip, so might need to escape here
@@ -728,12 +739,12 @@ function addItemsToZipWriter(blobWriter, items, callback) {
 	return rest;
 }
 
-function downloadCompleteZip(blobWriter, callback) {
+function downloadCompleteZip(blobWriter, filename, callback) {
 	// Close the writer and save it by dataURI
 	blobWriter.close(function (blob) {
 		chrome.downloads.download({
 			url: URL.createObjectURL(blob),
-			filename: 'All Resources/all.zip',
+			filename: 'CatfishSnapshots/' + filename,
 			saveAs: false
 		}, function () {
 			if (chrome.runtime.lastError) {
